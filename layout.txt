@@ -1,0 +1,11 @@
+Codebreaker - guesses codes
+Codemaker - generates code
+GameManager - gets input, assigns roles, manages guesses, signals display
+GameDisplay - displays game
+
+
+generate code
+display "code generated"
+ask for guess
+display guess with evaluation
+until 12 guesses or correct guess
