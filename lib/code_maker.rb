@@ -10,7 +10,18 @@ module Mastermind
 
     def create_code_human
       puts "What is your code? The possible colors are p, b, r, y, g, t. Reply in format: pppp"
-      gets.chomp
+      code = gets.chomp
+      until valid?(code)
+        puts "Invalid code. code must be 4 characters consisting of p, b, r, y, g, or t."
+        code = gets.chomp
+      end
+      code
+    end
+
+    private
+
+    def valid?(code)
+      code.chars.reduce(true) { |all_valid, char| all_valid && %w[p b r y g t].include?(char) } && code.length == 4
     end
   end
 end

@@ -26,8 +26,10 @@ module Mastermind
 
     def ask_roles
       puts "Do you want to make the code or guess it? (reply M/G)"
-      choice = nil
+      reply = gets.chomp
+      choice = validate_role_choice(reply)
       until choice
+        puts "Invalid answer. Please put \"M\" or \"G\"."
         reply = gets.chomp
         choice = validate_role_choice(reply)
       end
