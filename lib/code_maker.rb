@@ -5,7 +5,7 @@ module Mastermind
   # class for the entity that tries to guess the code
   class CodeMaker
     def create_code_computer
-      "aaaa"
+      "ppbr"
     end
 
     def create_code_human

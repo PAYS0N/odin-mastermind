@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "colorize"
+
 # module to contain the game mastermind
 module Mastermind
   # class for the entity that tries to guess the code
@@ -32,8 +34,46 @@ module Mastermind
     end
 
     def display_human_feedback(guess, code)
-      puts "Your guess: #{guess}"
-      puts "The code: #{code}"
+      num_exact_correct, remaining = exact_guess(guess, code)
+      num_partial_correct = partial_guess(guess, remaining)
+      display_pins(num_exact_correct, num_partial_correct)
+    end
+
+    def exact_guess(guess, code)
+      correct = 0
+      remaining = Hash.new(0)
+      0.upto(3) do |i|
+        if guess[i] == code[i]
+          correct += 1
+        else
+          remaining[code[i]] += 1
+        end
+      end
+      [correct, remaining]
+    end
+
+    def partial_guess(guess, remaining)
+      partial_correct = 0
+      0.upto(3) do |i|
+        unless remaining[guess[i]].zero?
+          partial_correct += 1
+          remaining[guess[i]] -= 1
+        end
+      end
+      partial_correct
+    end
+
+    def display_pins(exact, partial)
+      exact.times do
+        print "o".colorize(:red)
+      end
+      partial.times do
+        print "o".colorize(:white)
+      end
+      (4 - exact - partial).times do
+        print "o".colorize(:grey)
+      end
+      puts ""
     end
 
     def valid?(code)
