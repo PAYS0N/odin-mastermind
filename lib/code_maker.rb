@@ -5,7 +5,11 @@ module Mastermind
   # class for the entity that tries to guess the code
   class CodeMaker
     def create_code_computer
-      "ppbr"
+      code = []
+      4.times do
+        code.push(%w[p b r y g t][rand(0...6)])
+      end
+      code.join
     end
 
     def create_code_human
