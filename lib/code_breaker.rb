@@ -7,9 +7,27 @@ module Mastermind
   # class for the entity that tries to guess the code
   class CodeBreaker
     def break_code_computer(code)
-      return true if code == "aaaa"
+      num_guesses = 0
+      loop do
+        guess = generate_guess
+        display_guess(guess)
+        num_guesses += 1
+        break if num_guesses == 12 || guess == code
+      end
+      num_guesses != 12
+    end
 
-      false
+    def generate_guess
+      code = []
+      4.times do
+        code.push(%w[p b r y g t][rand(0...6)])
+      end
+      code.join
+    end
+
+    def display_guess(guess)
+      puts "Computer's guess: #{guess}"
+      sleep(2)
     end
 
     def break_code_human(code)
