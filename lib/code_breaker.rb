@@ -14,7 +14,7 @@ module Mastermind
         num_guesses += 1
         break if num_guesses == 12 || guess == code
       end
-      num_guesses != 12
+      guess == code
     end
 
     def generate_guess
@@ -38,7 +38,7 @@ module Mastermind
         guess = ask_guess
         num_guesses += 1
       end
-      num_guesses != 12
+      guess == code
     end
 
     def ask_guess
@@ -52,33 +52,36 @@ module Mastermind
     end
 
     def display_human_feedback(guess, code)
-      num_exact_correct, remaining = exact_guess(guess, code)
-      num_partial_correct = partial_guess(guess, remaining)
+      num_exact_correct, num_partial_correct = evaluate_guess(guess, code)
       display_pins(num_exact_correct, num_partial_correct)
     end
 
-    def exact_guess(guess, code)
+    def evaluate_guess(guess, code)
       correct = 0
-      remaining = Hash.new(0)
+      guess_chars = Hash.new(0)
+      code_chars = Hash.new(0)
       0.upto(3) do |i|
         if guess[i] == code[i]
           correct += 1
         else
-          remaining[code[i]] += 1
+          guess_chars[guess[i]] += 1
+          code_chars[code[i]] += 1
         end
       end
-      [correct, remaining]
+      [correct, evaluate_dicts(guess_chars, code_chars)]
     end
 
-    def partial_guess(guess, remaining)
-      partial_correct = 0
-      0.upto(3) do |i|
-        unless remaining[guess[i]].zero?
-          partial_correct += 1
-          remaining[guess[i]] -= 1
+    def evaluate_dicts(guess_chars, code_chars)
+      partial = 0
+      guess_chars.each do |k, v|
+        v.times do
+          if code_chars[k].positive?
+            partial += 1
+            code_chars[k] -= 1
+          end
         end
       end
-      partial_correct
+      partial
     end
 
     def display_pins(exact, partial)
